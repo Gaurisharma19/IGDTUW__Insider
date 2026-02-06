@@ -2,15 +2,6 @@
 <html lang="en">
 
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BP92XCYN2L"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-BP92XCYN2L');
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IGDTUW Insider - University Newspaper</title>
@@ -18,6 +9,97 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+        
+        /* Loading Overlay Styles */
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.6s ease-out;
+        }
+
+        .loader-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .editorial-loader {
+            width: 90%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .masthead {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 900;
+            color: white;
+            letter-spacing: -2px;
+            text-align: center;
+            line-height: 0.9;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .masthead span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(100px);
+            animation: letterReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .masthead span:nth-child(1) { animation-delay: 0.1s; }
+        .masthead span:nth-child(2) { animation-delay: 0.2s; }
+        .masthead span:nth-child(3) { animation-delay: 0.3s; }
+        .masthead span:nth-child(4) { animation-delay: 0.4s; }
+        .masthead span:nth-child(5) { animation-delay: 0.5s; }
+        .masthead span:nth-child(6) { animation-delay: 0.6s; }
+        .masthead span:nth-child(7) { animation-delay: 0.7s; }
+
+        @keyframes letterReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .divider-line {
+            width: 0;
+            height: 4px;
+            background: #8b0000;
+            animation: expandLine 1.5s ease-in-out forwards;
+            animation-delay: 0.8s;
+        }
+
+        @keyframes expandLine {
+            to { width: 100%; }
+        }
+
+        .subtitle-load {
+            font-family: 'Crimson Text', serif;
+            font-style: italic;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: #ccc;
+            letter-spacing: 1px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-in forwards;
+            animation-delay: 1.3s;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
     </style>
     <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="style.css">
@@ -25,6 +107,17 @@
 </head>
 
 <body class="loading">
+    <!-- Loading Overlay -->
+    <div class="loader-overlay" id="pageLoader">
+        <div class="editorial-loader">
+            <div class="masthead">
+                <span>I</span><span>N</span><span>S</span><span>I</span><span>D</span><span>E</span><span>R</span>
+            </div>
+            <div class="divider-line"></div>
+            <div class="subtitle-load">Loading Stories...</div>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -158,6 +251,20 @@
     </footer>
 
     <script>
+        // Hide loader after page loads
+        window.addEventListener('load', function () {
+            const loader = document.getElementById('pageLoader');
+            // Wait for animations to complete (about 2 seconds) then fade out
+            setTimeout(function () {
+                loader.classList.add('fade-out');
+                // Remove from DOM after fade completes
+                setTimeout(function () {
+                    loader.style.display = 'none';
+                    document.body.classList.add('loaded');
+                }, 600);
+            }, 2000);
+        });
+
         // Dynamic Typing Animation
         const typingText = document.getElementById('typing-text');
         const texts = [
@@ -285,11 +392,6 @@
         // Observe elements for animation
         document.querySelectorAll('.animate-on-scroll').forEach(el => {
             observer.observe(el);
-        });
-
-        // Enhanced Loading Animation
-        window.addEventListener('load', function () {
-            document.body.classList.add('loaded');
         });
 
         // Simplified click effects without excessive animations
