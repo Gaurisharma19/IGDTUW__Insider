@@ -9,15 +9,28 @@ window.addEventListener("load", () => {
   const realLogo          = document.querySelector(".logo-img");
   const masthead          = document.querySelector(".masthead");
 
+  // Define mobile breakpoint
+  const isMobile = window.innerWidth <= 768;
+
   // Hide real logo initially
   realLogo.style.opacity = "0";
 
   /* -------------------------------
-     1. Center position (above masthead)
+     1. Calculate Start Positions
   -------------------------------- */
+  let centerX, centerY;
   const mastRect = masthead.getBoundingClientRect();
-  const centerX  = mastRect.left + mastRect.width / 2;
-  const centerY  = mastRect.top - 120;
+
+  if (isMobile) {
+    // FIX: On mobile, force strict screen center for horizontal alignment
+    centerX = window.innerWidth / 2;
+    // Adjust vertical to be slightly above the masthead text
+    centerY = mastRect.top - 60; 
+  } else {
+    // Desktop: Use masthead dimensions
+    centerX = mastRect.left + mastRect.width / 2;
+    centerY = mastRect.top - 120;
+  }
 
   /* -------------------------------
      2. Full screen container
@@ -28,16 +41,17 @@ window.addEventListener("load", () => {
   });
 
   /* -------------------------------
-     3. Initial positions — icons start off-screen left/right
+     3. Initial positions
   -------------------------------- */
   gsap.set([newspaper, coffee], {
     left: centerX,
     top:  centerY,
-    scale: 1.2,
+    scale: isMobile ? 0.8 : 1.2, // Slightly smaller icons on mobile
     opacity: 0,
     transformOrigin: "center center"
   });
 
+  // Start off-screen
   gsap.set(newspaper, { x: -400 });
   gsap.set(coffee,    { x:  400 });
 
@@ -64,31 +78,25 @@ window.addEventListener("load", () => {
 
   /* -------------------------------
      5. Fly to navbar logo position
-        Desktop: use logoRect measured at load time (original behaviour).
-        Mobile (≤768px): re-measure just before flight so the hamburger
-        navbar layout is fully settled and we get the real logo coords.
   -------------------------------- */
-  const isMobile = window.innerWidth <= 768;
-
+  
   if (isMobile) {
 
-    // On mobile, defer the measurement to inside tl.add()
+    // On mobile, defer measurement until the last second
     tl.add(() => {
 
-      // Re-measure now — navbar is fully painted by this point
-      const logoRect  = realLogo.getBoundingClientRect();
+      // Re-measure target (Navbar Logo)
+      const logoRect = realLogo.getBoundingClientRect();
 
-      // Icon elements are positioned at (centerX, centerY) from top-left.
-      // getBoundingClientRect gives us the icon's current screen position,
-      // so we compute how far it needs to travel in screen space.
-      const iconRect  = newspaper.getBoundingClientRect();
+      // Get current position of the icons (should be screen center now)
+      const iconRect = newspaper.getBoundingClientRect();
       const iconCentreX = iconRect.left + iconRect.width  / 2;
       const iconCentreY = iconRect.top  + iconRect.height / 2;
 
       const logoCentreX = logoRect.left + logoRect.width  / 2;
       const logoCentreY = logoRect.top  + logoRect.height / 2;
 
-      // Delta in screen pixels → GSAP x/y are already in screen px here
+      // Calculate distance to travel
       const destX = logoCentreX - iconCentreX;
       const destY = logoCentreY - iconCentreY;
 
@@ -110,7 +118,7 @@ window.addEventListener("load", () => {
             filter: "brightness(3) drop-shadow(0 0 12px #fff)",
             ease: "power1.in",
             onComplete: () => {
-              gsap.to(realLogo,          { opacity: 1, duration: 0.25, ease: "power2.out" });
+              gsap.to(realLogo, { opacity: 1, duration: 0.25, ease: "power2.out" });
               gsap.to([newspaper, coffee], {
                 opacity: 0,
                 scale: targetScale * 1.3,
@@ -131,7 +139,7 @@ window.addEventListener("load", () => {
 
   } else {
 
-    // Desktop — original behaviour, logoRect measured at load time
+    // Desktop — Original Logic
     const logoRect    = realLogo.getBoundingClientRect();
     const destX       = logoRect.left + logoRect.width  / 2 - centerX;
     const destY       = logoRect.top  + logoRect.height / 2 - centerY;
