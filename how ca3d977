@@ -1,0 +1,78 @@
+* [33mca3d977[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Updated loader animation
+*   [33m4415cf2[m Merge pull request #6 from Gaurisharma19/submit-story-form
+[32m|[m[33m\[m  
+[32m|[m * [33m07231a6[m[33m ([m[1;32msubmit-story-form[m[33m)[m added submit story form to contact page
+* [33m|[m [33m3384d12[m updated
+* [33m|[m [33m2fc7d65[m Integrate Google Analytics tracking in team.html
+* [33m|[m [33md7e5db6[m Update edition.html
+* [33m|[m [33m2f0e774[m Integrate Google Analytics tracking in contact.html
+* [33m|[m [33m5a790a4[m Integrate Google Analytics tracking in about.html
+* [33m|[m [33m691d690[m Integrate Google Analytics tracking code
+* [33m|[m [33ma62064f[m Integrate Google Analytics tracking code
+* [33m|[m [33m75f9939[m Integrate Google Analytics tracking code
+* [33m|[m [33m7488eed[m Delete IGDTUW__Insider-main directory
+* [33m|[m [33me1816ea[m updated
+* [33m|[m [33mc7ceae9[m Merge branch 'main' of https://github.com/Surabhi210/IGDTUW__Insider :wq ssage to explain why this merge is necessary,
+[34m|[m[33m\[m[33m|[m 
+[34m|[m * [33maa2ba0b[m[33m ([m[1;32mfeature/acm-section[m[33m)[m updated
+[34m|[m * [33m6af897c[m updated
+[34m|[m * [33mca61987[m updated
+[34m|[m * [33mf3a04f5[m updated
+[34m|[m * [33ma4f790f[m updated
+[34m|[m * [33m0f62e91[m updated
+[34m|[m *   [33m395524a[m Merge pull request #5 from Gaurisharma19/feature/acm-section
+[34m|[m [36m|[m[1;31m\[m  
+[34m|[m [36m|[m * [33mfdbc113[m[33m ([m[1;32mfeature/submission-loader[m[33m)[m Add ACM Student Chapter section to About page
+[34m|[m [36m|[m[36m/[m  
+[34m|[m *   [33mcac9b82[m Merge pull request #4 from srishti1837/main
+[34m|[m [1;32m|[m[1;33m\[m  
+[34m|[m [1;32m|[m * [33m9325ba8[m Updated team.html
+[34m|[m [1;32m|[m[1;32m/[m  
+[34m|[m * [33m9a213da[m updated
+[34m|[m *   [33mc842b6d[m t push origin main Merge branch 'main' of https://github.com/Surabhi210/IGDTUW__Insider
+[34m|[m [1;34m|[m[1;35m\[m  
+[34m|[m [1;34m|[m * [33m0a24744[m Create CNAME
+[34m|[m [1;34m|[m * [33md0bd794[m Delete CNAME
+[34m|[m [1;34m|[m *   [33ma6cd166[m Merge pull request #3 from coffeecookey/master
+[34m|[m [1;34m|[m [1;36m|[m[31m\[m  
+[34m|[m [1;34m|[m [1;36m|[m * [33mdb24c61[m logo changes
+[34m|[m * [1;36m|[m [31m|[m [33m845e25a[m updated
+[34m|[m [1;36m|[m[1;36m/[m [31m/[m  
+[34m|[m * [31m|[m [33m1b23815[m updated
+[34m|[m * [31m|[m [33mbaba532[m Create CNAME
+[34m|[m * [31m|[m [33md1bd328[m Delete CNAME
+[34m|[m * [31m|[m [33mcc028a4[m Update CNAME
+[34m|[m * [31m|[m [33mf96a5a9[m Update CNAME
+[34m|[m * [31m|[m [33mca081e5[m Create CNAME
+[34m|[m [31m|[m[31m/[m  
+[34m|[m * [33m98f6086[m updated
+[34m|[m * [33mcb4859e[m updated
+[34m|[m * [33mc0faf78[m updated
+[34m|[m * [33m7054672[m updated
+[34m|[m * [33ma2c6427[m updated
+[34m|[m *   [33m283ab48[m Merge pull request #2 from coffeecookey/main
+[34m|[m [32m|[m[33m\[m  
+[34m|[m [32m|[m *   [33md1140a7[m Merge branch 'Surabhi210:main' into main
+[34m|[m [32m|[m [34m|[m[32m\[m  
+[34m|[m [32m|[m [34m|[m[32m/[m  
+[34m|[m [32m|[m[32m/[m[34m|[m   
+[34m|[m [32m|[m * [33m4598ee5[m navbar
+* [32m|[m [35m|[m [33md228854[m Initial commit: IGDTUW Insider website
+ [32m/[m [35m/[m  
+[32m|[m [35m|[m * [33mb3567e5[m[33m ([m[1;31morigin/revert-1-main[m[33m)[m Revert "changes to navbar and about page"
+[32m|[m [35m|[m[32m/[m  
+[32m|[m[32m/[m[35m|[m   
+* [35m|[m [33m0d97925[m Merge pull request #1 from coffeecookey/main
+[1;31m|[m[35m\[m[35m|[m 
+[1;31m|[m * [33m256b2c6[m changes to navbar and about page
+* [1;32m|[m [33md639223[m updated
+[1;32m|[m[1;32m/[m  
+* [33m9939572[m updated
+* [33mffbbd60[m updated
+* [33m79a1626[m updated
+* [33m1fdad3c[m updated
+* [33m11a88dd[m updated
+* [33m772f473[m updated
+* [33mdc78b1c[m updated
+* [33m1aec1e9[m updated
+* [33mba247db[m updated

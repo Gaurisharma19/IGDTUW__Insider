@@ -64,18 +64,13 @@ window.addEventListener("load", () => {
 
   /* -------------------------------
      5. Fly to navbar logo position
-        Move the ICONS themselves, not the whole container.
-        This keeps them full-size until they reach the target,
-        then scale them down as they arrive.
   -------------------------------- */
   const logoRect = realLogo.getBoundingClientRect();
 
-  // Where the icons need to END UP (absolute screen position)
   const destX = logoRect.left + logoRect.width  / 2 - centerX;
   const destY = logoRect.top  + logoRect.height / 2 - centerY;
 
-  // How much smaller the logo is vs the icons (so they shrink to fit)
-  const targetScale = Math.min(logoRect.width, logoRect.height) / 80; // ~80px assumed icon natural size
+  const targetScale = Math.min(logoRect.width, logoRect.height) / 80; 
 
   tl.to([newspaper, coffee], {
     duration: 0.9,
@@ -83,7 +78,7 @@ window.addEventListener("load", () => {
     y: destY,
     scale: targetScale,
     ease: "power3.inOut",
-    stagger: 0.05   // slight stagger so they don't perfectly overlap mid-flight
+    stagger: 0.05  
   })
 
   /* -------------------------------
