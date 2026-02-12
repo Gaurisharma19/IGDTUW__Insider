@@ -36,6 +36,28 @@ body {
     padding: 0 20px;
 }
 
+/*Logo Animation Styles*/
+/* Hide real navbar logo initially */
+.logo-img {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+/* Animated logo container */
+#animatedLogoContainer {
+    pointer-events: none;
+    z-index: 20;
+}
+
+/* Individual animated icons */
+#animatedNewspaper,
+#animatedCoffee {
+    position: absolute;
+    width: 120px; 
+    height: auto;
+}
+
+
 /* Hero Section */
 .hero {
     position: relative;
