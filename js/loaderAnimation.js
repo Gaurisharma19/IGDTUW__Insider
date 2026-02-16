@@ -9,157 +9,133 @@ window.addEventListener("load", () => {
   const realLogo          = document.querySelector(".logo-img");
   const masthead          = document.querySelector(".masthead");
 
-  const isMobile = window.innerWidth <= 768;
-
-  // Hide real logo initially
   realLogo.style.opacity = "0";
 
-  /* -------------------------------
-     1. Calculate Start Positions
-  -------------------------------- */
-  let centerX, centerY;
-  const mastRect = masthead.getBoundingClientRect();
-
-  if (isMobile) {
-    // MOBILE: Force exact center horizontally, slightly higher vertically
-    centerX = window.innerWidth / 2;
-    centerY = mastRect.top - 160; 
-  } else {
-    // DESKTOP
-    centerX = mastRect.left + mastRect.width / 2;
-    centerY = mastRect.top - 120;
-  }
-
-  /* -------------------------------
-     2. Setup Container
-  -------------------------------- */
+  // Full-screen fixed stage — no scroll interference
   gsap.set(animatedContainer, {
     position: "fixed",
-    inset: 0,
-    zIndex: 9999
+    top: 0, left: 0,
+    width: "100%", height: "100%",
+    zIndex: 9999,
+    pointerEvents: "none"
   });
 
-  /* -------------------------------
-     3. Initial Icon Setup
-  -------------------------------- */
+  const isMobile  = window.innerWidth <= 768;
+  const iconScale = isMobile ? 0.75 : 1.1;
+  const spread    = isMobile ? Math.min(window.innerWidth * 0.38, 160) : 280;
+
+  // Park icons above the "INSIDER" masthead text, not at raw 50% which overlaps it
+  const mastRect = masthead ? masthead.getBoundingClientRect() : null;
+  const meetX    = window.innerWidth / 2;
+  const meetY    = mastRect
+    ? mastRect.top - (isMobile ? 90 : 110)
+    : window.innerHeight / 2 - 120;
+
   gsap.set([newspaper, coffee], {
-    left: centerX,
-    top:  centerY,
-    scale: isMobile ? 0.9 : 1.2,
-    opacity: 0,
-    transformOrigin: "center center"
+    position: "fixed",
+    top:      meetY,
+    left:     meetX,
+    xPercent: -50,
+    yPercent: -50,
+    scale:    iconScale,
+    opacity:  0,
+    transformOrigin: "center center",
+    willChange: "transform, opacity"
   });
 
-  gsap.set(newspaper, { x: -400 });
-  gsap.set(coffee,    { x:  400 });
+  gsap.set(newspaper, { x: -spread });
+  gsap.set(coffee,    { x:  spread });
 
-  /* -------------------------------
-     4. Animation Timeline
-  -------------------------------- */
   const tl = gsap.timeline();
 
-  // STEP 1: Fly to center (SLOWED DOWN)
+  // STEP 1 — icons fly to center (above masthead)
   tl.to([newspaper, coffee], {
-    duration: 2.0,       // Was 1.2
+    duration: 1.6,
     x: 0,
     opacity: 1,
     ease: "power3.out"
   });
 
-  // STEP 2: Bounce (SLOWED DOWN)
+  // STEP 2 — small bounce (pixel-based)
   tl.to([newspaper, coffee], {
     y: "+=10",
     repeat: 1,
     yoyo: true,
-    duration: 1.0        // Was 0.6
+    duration: 0.45,
+    ease: "power1.inOut"
   });
 
-  /* -------------------------------
-     5. Fly to Navbar Logic
-  -------------------------------- */
-  
-  if (isMobile) {
-    // --- MOBILE LOGIC ---
-    tl.add(() => {
-      // Re-measure positions now that layout is settled
-      const startRect = newspaper.getBoundingClientRect();
-      const startX = startRect.left + startRect.width / 2;
-      const startY = startRect.top + startRect.height / 2;
+  // STEP 3 — measure live positions here (after layout settles), fly to navbar logo
+  tl.add(() => {
+    const logoRect  = realLogo.getBoundingClientRect();
+    const logoDestX = logoRect.left + logoRect.width  / 2;
+    const logoDestY = logoRect.top  + logoRect.height / 2;
 
-      const endRect = realLogo.getBoundingClientRect();
-      const endX = endRect.left + endRect.width / 2;
-      const endY = endRect.top + endRect.height / 2;
+    const npRect = newspaper.getBoundingClientRect();
+    const cfRect = coffee.getBoundingClientRect();
 
-      let destX = endX - startX; 
-      let destY = endY - startY;
+    const npDeltaX = logoDestX - (npRect.left + npRect.width  / 2);
+    const npDeltaY = logoDestY - (npRect.top  + npRect.height / 2);
+    const cfDeltaX = logoDestX - (cfRect.left + cfRect.width  / 2);
+    const cfDeltaY = logoDestY - (cfRect.top  + cfRect.height / 2);
 
-      // FIX: Nudge left for mobile alignment
-      destX = destX - 40; 
-      destY = destY + 5;  
+    const logoSize    = Math.min(logoRect.width, logoRect.height);
+    const iconSize    = Math.max(npRect.width, npRect.height);
+    const targetScale = Math.max(logoSize / iconSize, 0.08);
 
-      const targetScale = Math.max(
-        Math.min(endRect.width, endRect.height) / 80, 0.1
-      );
-
-      // STEP 3: Fly to Navbar (SLOWED DOWN)
-      gsap.to([newspaper, coffee], {
-        duration: 1.5,   // Was 0.9
-        x: "+=" + destX,
-        y: "+=" + destY,
-        scale: targetScale,
-        ease: "power3.inOut",
-        stagger: 0.1,    // Increased stagger for slower feel
-        onComplete: () => {
-          // Flash & End
-          gsap.to([newspaper, coffee], {
-            duration: 0.3, // Was 0.15
-            filter: "brightness(3) drop-shadow(0 0 12px #fff)",
-            ease: "power1.in",
-            onComplete: () => {
-              gsap.to(realLogo, { opacity: 1, duration: 0.5 });
-              gsap.to([newspaper, coffee], {
-                opacity: 0,
-                duration: 0.4,
-                onComplete: () => {
-                   loader.style.display = "none";
-                   animatedContainer.remove();
-                }
-              });
-            }
-          });
-        }
-      });
+    // "+=" increments so we don't fight the existing transform state
+    gsap.to(newspaper, {
+      duration: 1.2,
+      ease: "power3.inOut",
+      x: "+=" + npDeltaX,
+      y: "+=" + npDeltaY,
+      scale: targetScale
     });
 
-  } else {
-    // --- DESKTOP LOGIC ---
-    const logoRect    = realLogo.getBoundingClientRect();
-    const destX       = logoRect.left + logoRect.width  / 2 - centerX;
-    const destY       = logoRect.top  + logoRect.height / 2 - centerY;
-    const targetScale = Math.min(logoRect.width, logoRect.height) / 80;
-
-    // STEP 3: Fly to Navbar (SLOWED DOWN)
-    tl.to([newspaper, coffee], {
-      duration: 1.5,     // Was 0.9
-      x: destX,
-      y: destY,
-      scale: targetScale,
+    gsap.to(coffee, {
+      duration: 1.2,
       ease: "power3.inOut",
-      stagger: 0.1
-    })
-    .to([newspaper, coffee], {
-      duration: 0.3,     // Was 0.15
-      filter: "brightness(3) drop-shadow(0 0 12px #fff)",
-      ease: "power1.in"
-    })
-    .to(realLogo, { opacity: 1, duration: 0.5 }, "<")
-    .to([newspaper, coffee], {
+      delay: 0.08,
+      x: "+=" + cfDeltaX,
+      y: "+=" + cfDeltaY,
+      scale: targetScale
+    });
+
+    // Flash → reveal real logo → fade icons out
+    gsap.to([newspaper, coffee], {
+      duration: 0.25,
+      filter: "brightness(4) drop-shadow(0 0 10px #fff)",
+      ease: "power1.in",
+      delay: 1.15,
+      onComplete: () => {
+        gsap.to(realLogo, { opacity: 1, duration: 0.4 });
+        gsap.to([newspaper, coffee], {
+          opacity: 0,
+          duration: 0.35,
+          onComplete: finishLoader
+        });
+      }
+    });
+  });
+
+  // Clean teardown in the right order to avoid flash of unstyled content
+  function finishLoader() {
+    gsap.to(loader, {
       opacity: 0,
-      duration: 0.4,
+      duration: 0.5,
+      ease: "power1.out",
       onComplete: () => {
         loader.style.display = "none";
-        animatedContainer.remove();
+        document.body.classList.remove("loading");
+        document.body.classList.add("loaded");
+        if (animatedContainer.parentNode) animatedContainer.remove();
       }
-    }, "<+0.2");
+    });
   }
+
+  // Safety fallback — forces close if GSAP stalls for any reason
+  setTimeout(() => {
+    if (loader && loader.style.display !== "none") finishLoader();
+  }, 8000);
+
 });
