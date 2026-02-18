@@ -73,33 +73,6 @@
                 transform: translateY(0);
             }
         }
-
-        .divider-line {
-            width: 0;
-            height: 4px;
-            background: #8b0000;
-            animation: expandLine 1.6s ease-in-out forwards;
-            animation-delay: 2.0s;
-        }
-
-        @keyframes expandLine {
-            to { width: 100%; }
-        }
-
-        .subtitle-load {
-            font-family: 'Crimson Text', serif;
-            font-style: italic;
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            color: #ccc;
-            letter-spacing: 1px;
-            opacity: 0;
-            animation: fadeIn 1s ease-in forwards;
-            animation-delay: 2.8s;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
     </style>
     <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="style.css">
@@ -118,8 +91,6 @@
             <div class="masthead">
                 <span>I</span><span>N</span><span>S</span><span>I</span><span>D</span><span>E</span><span>R</span>
             </div>
-            <div class="divider-line"></div>
-            <div class="subtitle-load">Loading Stories...</div>
         </div>
     </div>
 
