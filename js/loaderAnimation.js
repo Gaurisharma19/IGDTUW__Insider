@@ -42,6 +42,9 @@ window.addEventListener("load", () => {
   gsap.set(newspaper, { x: -spread });
   gsap.set(coffee,    { x:  spread });
 
+  // Set masthead to be visible and controlled by GSAP
+  gsap.set(masthead, { opacity: 1 });
+
   const tl = gsap.timeline();
 
   // STEP 1 — icons fly to center (above masthead)
@@ -61,8 +64,8 @@ window.addEventListener("load", () => {
     ease: "power1.inOut"
   });
 
-  // STEP 3 — hold briefly, then fade out icons and loader
-  tl.to([newspaper, coffee], {
+  // STEP 3 — hold briefly, then fade out BOTH icons AND masthead together
+  tl.to([newspaper, coffee, masthead], {
     duration: 0.5,
     opacity: 0,
     ease: "power1.out",
